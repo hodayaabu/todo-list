@@ -1,0 +1,31 @@
+* {
+    background-color: rgb(243, 252, 255);
+}
+
+.home {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+
+    .main-title {
+        color: rgb(68, 68, 102);
+        font-weight: 900;
+        font-size: 70px;
+        text-align: center;
+        margin: 150px;
+    }
+
+    .actions {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        margin-bottom: 30px;
+
+    }
+}
+
+
+.task-list {
+    list-style: none;
+}

@@ -1,0 +1,22 @@
+.task-preview-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+    box-shadow: #0000001a 0px 0px 10px;
+    padding: 5px;
+
+    .task-preview {
+        display: flex;
+        justify-content: space-around;
+        align-items: center;
+        gap: 30px;
+    }
+
+    .task-actions {
+        button {
+            margin: 5px;
+
+        }
+    }
+}
