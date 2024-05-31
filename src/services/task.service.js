@@ -1,48 +1,52 @@
+import Axios from "axios";
 
-import { storageService } from './async-storage.service.js'
-import { utilService } from './util.service.js'
+const axios = Axios.create({
+  withCredentials: true,
+});
 
-const STORAGE_KEY = 'taskDB'
-
-_createTasks()
+const BASE_URL =
+  process.env.NODE_ENV === "production"
+    ? "/api/task/"
+    : "//localhost:3030/api/task/";
 
 export const taskService = {
-    query,
-    getById,
-    save,
-    remove,
+  query,
+  save,
+  remove,
+};
+
+// Get List
+async function query() {
+  try {
+    const { data: tasks } = await axios.get(BASE_URL);
+    return tasks;
+  } catch (err) {
+    console.log(err);
+    throw err;
+  }
 }
 
-function query() {
-    return storageService.query(STORAGE_KEY)
-}
-function getById(taskId) {
-    return storageService.get(STORAGE_KEY, taskId)
-}
-function remove(taskId) {
-    return storageService.remove(STORAGE_KEY, taskId)
-}
-function save(task) {
-    if (task._id) {
-        return storageService.put(STORAGE_KEY, task)
-    } else {
-        return storageService.post(STORAGE_KEY, task)
-    }
+
+// DELETE
+async function remove(taskId) {
+  const url = BASE_URL + taskId;
+  try {
+    const { data: res } = await axios.delete(url);
+    return res;
+  } catch (err) {
+    console.log(err);
+  }
 }
 
-function _createTasks() {
-    let tasks = utilService.loadFromStorage(STORAGE_KEY)
-    if (!tasks || !tasks.length) {
-        tasks = [
-            {
-                _id: utilService.makeId(),
-                title: 'Hey!',
-                description: 'Would love to catch up sometimes',
-                completed: false,
-                createdAt: null
-            },
-
-        ]
-        utilService.saveToStorage(STORAGE_KEY, tasks)
-    }
+// PUT/POST
+async function save(task) {
+  const dynMethod = task._id ? "put" : "post";
+  const dynPath = task._id ? BASE_URL + task._id : BASE_URL;
+  try {
+    const { data: savedTask } = await axios[dynMethod](dynPath, task);
+    return savedTask;
+  } catch (err) {
+    console.log(err);
+    throw err;
+  }
 }
